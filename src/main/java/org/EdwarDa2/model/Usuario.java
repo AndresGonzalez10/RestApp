@@ -3,17 +3,17 @@ package org.EdwarDa2.model;
 public class Usuario {
     private int idUsuario;
     private String nombre;
-    private String apellidoP;
-    private String apellidoM;
+    private String apellido_p;
+    private String apellido_m;
     private String tipoRol;
     private String clave;
 
     // Constructor
-    public Usuario(int idUsuario, String nombre, String apellidoP, String apellidoM, String tipoRol, String clave) {
+    public Usuario(int idUsuario, String nombre, String apellido_p, String apellido_m, String tipoRol, String clave) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
-        this.apellidoP = apellidoP;
-        this.apellidoM = apellidoM;
+        this.apellido_p = apellido_p;
+        this.apellido_m = apellido_m;
         this.tipoRol = tipoRol;
         this.clave = clave;
     }
@@ -34,20 +34,20 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApellidoP() {
-        return apellidoP;
+    public String getApellido_p() {
+        return apellido_p;
     }
 
-    public void setApellidoP(String apellidoP) {
-        this.apellidoP = apellidoP;
+    public void setApellido_p(String apellido_p) {
+        this.apellido_p = apellido_p;
     }
 
-    public String getApellidoM() {
-        return apellidoM;
+    public String getApellido_m() {
+        return apellido_m;
     }
 
-    public void setApellidoM(String apellidoM) {
-        this.apellidoM = apellidoM;
+    public void setApellido_m(String apellido_m) {
+        this.apellido_m = apellido_m;
     }
 
     public String getTipoRol() {

@@ -1,12 +1,9 @@
 package org.EdwarDa2.di;
 
-import io.javalin.Javalin;
 import org.EdwarDa2.controller.*;
 import org.EdwarDa2.repository.*;
 import org.EdwarDa2.routes.*;
 import org.EdwarDa2.service.*;
-
-import static java.rmi.Naming.bind;
 
 public class AppModule {
 
@@ -103,6 +100,15 @@ public class AppModule {
         LoginController loginController = new LoginController(loginService);
         LoginRoutes loginRoutes = new LoginRoutes(loginController);
         return loginRoutes;
+    }
+
+    public static UsuarioRoutes initUser() {
+        UserRepository userRepository = new UserRepository();
+        UserService userService = new UserService(userRepository);
+        UserController userController = new UserController(userService);
+        UsuarioRoutes usuarioRoutes = new UsuarioRoutes(userController);
+        return usuarioRoutes;
+
     }
 }
 

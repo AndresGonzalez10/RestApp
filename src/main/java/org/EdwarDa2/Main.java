@@ -24,5 +24,6 @@ public class Main {
         AppModule.initAvisos().register(app);
         AppModule.initStats().register(app);
         AppModule.initLogin().register(app);
+        AppModule.initUser().register(app);
     }
 }

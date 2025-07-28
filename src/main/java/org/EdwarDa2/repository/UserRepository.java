@@ -12,8 +12,7 @@ public class UserRepository {
     // Obtener todos los usuarios
     public List<User> findAll() throws SQLException {
         List<User> usuarios = new ArrayList<>();
-        // Usamos siempre la tabla pluralizada "usuarios"
-        String query = "SELECT id_usuario, nombre, apellido_p, apellido_m, rol FROM usuarios";
+        String query = "SELECT * FROM usuarios WHERE rol = 2";
         try (Connection conn = DatabaseConfig.getDataSource().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
