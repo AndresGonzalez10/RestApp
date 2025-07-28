@@ -5,10 +5,12 @@ public class DetalleComandaDTO {
     private int id_comanda;
     private int id_producto;
     private int cantidad;
+    private Float precio;
     private String nombreProducto;
     private String comentario;
 
-
+    public Float getPrecio() {return precio;}
+    public void setPrecio(Float precio) {this.precio = precio;}
     public DetalleComandaDTO() {}
 
     public int getId_comanda() {

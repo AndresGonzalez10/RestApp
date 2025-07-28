@@ -6,6 +6,7 @@ import org.EdwarDa2.model.Comanda;
 import org.EdwarDa2.service.ComandaService;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class ComandaController {
         private final ComandaService comandaService;
@@ -26,7 +27,7 @@ public class ComandaController {
         public void getById(Context ctx) {
             try {
                 int id = Integer.parseInt(ctx.pathParam("id_comanda"));
-                Comanda comanda = comandaService.getById_comanda(id);
+                ComandaRequestDTO comanda = comandaService.getById_comanda(id);
                 if (comanda != null) {
                     ctx.json(comanda);
                 } else {
@@ -37,16 +38,19 @@ public class ComandaController {
             }
         }
 
-        public void create(Context ctx) {
-            try {
-                ComandaRequestDTO comanda = ctx.bodyAsClass(ComandaRequestDTO.class);
-                comandaService.createComanda(comanda);
-                ctx.status(201).result("comanda creada");
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.status(400).result("Error al crear Comanda"+e.getMessage());
-            }
+    public void create(Context ctx) {
+        try {
+            ComandaRequestDTO comanda = ctx.bodyAsClass(ComandaRequestDTO.class);
+            int idGenerado = comandaService.createComanda(comanda);
+            ctx.status(201).json(Map.of(
+                    "mensaje", "Comanda creada",
+                    "id_comanda", idGenerado
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(400).result("Error al crear Comanda: " + e.getMessage());
         }
+    }
         public void delete(Context ctx) {
             try {
                 int id = Integer.parseInt(ctx.pathParam("id"));

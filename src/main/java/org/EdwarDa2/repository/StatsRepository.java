@@ -1,7 +1,7 @@
 package org.EdwarDa2.repository;
 
 import org.EdwarDa2.config.DatabaseConfig;
-import org.EdwarDa2.model.Stat;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,13 +16,15 @@ public class StatsRepository {
     public List<Map<String, Object>> getGananciaPorMesa(String fechaInicio, String fechaFin) throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
 
+
         StringBuilder sql = new StringBuilder("""
-        SELECT c.id_mesa,
-               SUM(p.precio * d.cantidad) AS total_ganancia
-        FROM comandas c
-        JOIN detallecomanda d ON c.id_comanda = d.id_comanda
-        JOIN productos p ON d.id_producto = p.id_producto
-    """);
+            SELECT
+                c.id_mesa,
+                SUM(p.precio * d.cantidad) AS total_ganancia
+            FROM comandas c
+            JOIN detalle_comandas d ON c.id_comanda = d.id_comanda
+            JOIN productos p ON d.id_producto = p.id_producto
+        """);
 
         List<Object> parametros = new ArrayList<>();
         if (fechaInicio != null && fechaFin != null) {
@@ -31,7 +33,9 @@ public class StatsRepository {
             parametros.add(fechaFin);
         }
 
+
         sql.append("GROUP BY c.id_mesa ORDER BY total_ganancia DESC");
+
 
         try (Connection conn = DatabaseConfig.getDataSource().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
@@ -51,7 +55,4 @@ public class StatsRepository {
 
         return lista;
     }
-
-
-
 }

@@ -17,7 +17,7 @@ public class ComandaRepository {
 
         String comandaQuery ="SELECT * FROM comandas";
         String detalleQuery ="SELECT d.id_comanda, d.id_producto, d.cantidad, d.id_detallecomanda,d.comentario,p.nombre \n" +
-                "\t FROM detallecomandas d \n" +
+                "\t FROM detalle_comandas d \n" +
                 "\t JOIN productos p  ON d.id_producto = p.id_producto;";
 
         Map<Integer, ArrayList<DetalleComandaDTO>> productosPorComanda = new HashMap<>();
@@ -48,7 +48,6 @@ public class ComandaRepository {
                 while (rs.next()) {
                     int id_comanda = rs.getInt("id_comanda");
                     int id_mesa = rs.getInt("id_mesa");
-                    int id_mesero = rs.getInt("id_mesero");
                     Timestamp fecha = Timestamp.valueOf(rs.getTimestamp("fecha_hora").toLocalDateTime());
 
                     ArrayList<DetalleComandaDTO> productos = productosPorComanda.getOrDefault(id_comanda, new ArrayList<>());
@@ -56,7 +55,6 @@ public class ComandaRepository {
                     ComandaRequestDTO dto = new ComandaRequestDTO(
                             id_comanda,
                             id_mesa,
-                            id_mesero,
                             fecha.toLocalDateTime(),
                             productos
                     );
@@ -65,49 +63,64 @@ public class ComandaRepository {
                 }
             }
         }
-
         return lista;
     }
 
 
 
-    public Comanda findById_comanda(int id_comanda) throws SQLException {
-            Comanda comanda = null;
-            String query = "SELECT * FROM comandas WHERE id_comanda = ?";
+    public ComandaRequestDTO findById_comanda(int id_comanda) throws SQLException {
+        ComandaRequestDTO dto = null;
+        String comandaQuery = "SELECT * FROM comandas WHERE id_comanda = ?";
+        String detalleQuery = "SELECT p.nombre AS nombreProducto, p.precio " +
+                "FROM detalle_comandas dc " +
+                "JOIN productos p ON dc.id_producto = p.id_producto " +
+                "WHERE dc.id_comanda = ?";
 
-            try (Connection conn = DatabaseConfig.getDataSource().getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-
+        try (Connection conn = DatabaseConfig.getDataSource().getConnection()) {
+            // Obtener datos de la comanda
+            try (PreparedStatement stmt = conn.prepareStatement(comandaQuery)) {
                 stmt.setInt(1, id_comanda);
-
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
-                        comanda = new Comanda();
-                        comanda.setId_comanda(rs.getInt("id_comanda"));
-                        comanda.setId_mesa(rs.getInt("id_mesa"));
-                        comanda.setId_mesero(rs.getInt("id_mesero"));
-                        comanda.setFecha_hora(rs.getTimestamp("fecha_hora").toLocalDateTime());
-
-
+                        dto = new ComandaRequestDTO();
+                        dto.setId_comanda(rs.getInt("id_comanda"));
+                        dto.setId_mesa(rs.getInt("id_mesa"));
+                        dto.setFecha_hora(rs.getTimestamp("fecha_hora").toLocalDateTime());
+                        dto.setListaProductos(new ArrayList<>());
                     }
                 }
             }
 
-            return comanda;
+            // Obtener productos asociados
+            if (dto != null) {
+                try (PreparedStatement stmt2 = conn.prepareStatement(detalleQuery)) {
+                    stmt2.setInt(1, id_comanda);
+                    try (ResultSet rs2 = stmt2.executeQuery()) {
+                        while (rs2.next()) {
+                            DetalleComandaDTO prod = new DetalleComandaDTO();
+                            prod.setNombreProducto(rs2.getString("nombreProducto"));
+                            prod.setPrecio(rs2.getFloat("precio"));
+                            dto.getListaProductos().add(prod);
+                        }
+                    }
+                }
+            }
         }
-    public void save(ComandaRequestDTO comanda) throws SQLException {
-        String insertComanda = "INSERT INTO comandas (id_mesa, id_mesero, fecha_hora) VALUES (?, ?, ?)";
-        String insertDetalle = "INSERT INTO detallecomandas (id_comanda, id_producto, cantidad,comentario) VALUES (?, ?, ?, ?)";
+
+        return dto;
+    }
+    public int save(ComandaRequestDTO comanda) throws SQLException {
+        String insertComanda = "INSERT INTO comandas (id_mesa, fecha_hora) VALUES (?, ?)";
+        String insertDetalle = "INSERT INTO detalle_comandas (id_comanda, id_producto, cantidad, comentario) VALUES (?, ?, ?, ?)";
+        int idGenerado;
 
         try (Connection conn = DatabaseConfig.getDataSource().getConnection()) {
             conn.setAutoCommit(false);
-            int idGenerado;
 
             try (PreparedStatement stmt = conn.prepareStatement(insertComanda, Statement.RETURN_GENERATED_KEYS)) {
                 stmt.setInt(1, comanda.getId_mesa());
-                stmt.setInt(2, comanda.getId_mesero());
                 LocalDateTime fecha = comanda.getFecha_hora() != null ? comanda.getFecha_hora() : LocalDateTime.now();
-                stmt.setTimestamp(3, Timestamp.valueOf(fecha));
+                stmt.setTimestamp(2, Timestamp.valueOf(fecha));
                 stmt.executeUpdate();
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
@@ -128,11 +141,14 @@ public class ComandaRepository {
                 }
                 detalleStmt.executeBatch();
             }
+
             conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
+
+        return idGenerado;
     }
 
 
