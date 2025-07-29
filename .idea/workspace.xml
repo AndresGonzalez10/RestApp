@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd6834a3-c561-46d6-8a22-4a228e1bbaea" name="Changes" comment="api 1.0">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/routes/UsuarioRoutes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_07_2025_10_54_p_ m__[Changes]/buildOutputCleanup.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_07_2025_10_54_p_ m__[Changes]/executionHistory.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_07_2025_10_54_p_ m__[Changes]/file-system.probe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_07_2025_10_54_p_ m__[Changes]/fileHashes.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_07_2025_10_54_p_ m__[Changes]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/di/AppModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/di/AppModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/model/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/repository/ComandaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/EdwarDa2/repository/ComandaRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +95,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/cesarr/IdeaProjects/template_api",
+    "last_opened_file_path": "C:/Users/HP/IdeaProjects/RestApp",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

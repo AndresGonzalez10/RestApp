@@ -153,13 +153,30 @@ public class ComandaRepository {
 
 
     public void delete(int id_comanda) throws SQLException {
-            String query = "DELETE FROM comandas WHERE id_comanda = ?";
-            try (Connection conn = DatabaseConfig.getDataSource().getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, id_comanda);
-                stmt.executeUpdate();
+        String deleteDetalle = "DELETE FROM detalle_comandas WHERE id_comanda = ?";
+        String deleteComanda = "DELETE FROM comandas WHERE id_comanda = ?";
+
+        try (Connection conn = DatabaseConfig.getDataSource().getConnection()) {
+            conn.setAutoCommit(false); // Iniciar transacción
+
+            try (PreparedStatement stmtDetalle = conn.prepareStatement(deleteDetalle)) {
+                stmtDetalle.setInt(1, id_comanda);
+                stmtDetalle.executeUpdate();
             }
+
+            try (PreparedStatement stmtComanda = conn.prepareStatement(deleteComanda)) {
+                stmtComanda.setInt(1, id_comanda);
+                stmtComanda.executeUpdate();
+            }
+
+            conn.commit(); // Confirmar cambios
+        } catch (SQLException e) {
+            e.printStackTrace(); // 👈 imprime el error en consola del backend
+            throw e;
         }
+    }
+
+
 }
 
 
